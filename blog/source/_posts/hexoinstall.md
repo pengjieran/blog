@@ -1,13 +1,8 @@
 ---
 title: Hexo环境安装配置
 date: 2017-12-09 20:46:25
-
-categories: 
-- hexo相关
-
-tags: 
-- hexo命令行
-
+categories: [hexo相关]
+tags: [hexo命令行]
 ---
 
 本文主要介绍node.js的安装，npm的安装，hexo环境配置及相关命令使用
