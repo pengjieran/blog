@@ -28,3 +28,6 @@ tags: [eclipse实用快捷键]
 15. Option+回车 显示当前选择资源的属性
 16. Option+/ 代码提示
 17. Command+Shift+O(字母) 去掉多余的import语句
+18. Command+Shit+f 格式化代码
+
+## windows平台下常用快捷键
