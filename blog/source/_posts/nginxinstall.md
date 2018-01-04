@@ -34,6 +34,10 @@ yum install -y openssl openssl-devel
 ```bash
 ./configure
 ```
+```bash
+#配置ssl模块，realip模块，socket转发模块
+./configure --with-http_stub_status_module --with-http_ssl_module --with-http_realip_module --with-stream
+```
 （2.自定义配置）<br>
 ```bash
 ./configure \
