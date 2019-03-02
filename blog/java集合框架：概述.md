@@ -99,3 +99,11 @@ public class LinkedList<E>
     implements List<E>, Deque<E>, Cloneable, java.io.Serializable
 ```
 继承AbstractSequentialList并实现了List, Deque, Cloneable, Serializable等接口
+
+## HashSet
+```java
+public class HashSet<E>
+    extends AbstractSet<E>
+    implements Set<E>, Cloneable, java.io.Serializable
+```
+继承至AbstractSet并实现了Set,Cloneable,Serializable接口
