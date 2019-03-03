@@ -2,7 +2,7 @@
 title: java集合框架：概述
 tags:
   - java
-originContent: >
+originContent: >-
   本文主要内容是概述java集合框架的所有内容，接下来的篇章会详细介绍各个集合的内容。
 
   <!-- more -->
@@ -102,6 +102,50 @@ originContent: >
   ```
 
   继承HashSet并实现Set,Cloneable,Serializable接口
+
+  ## HashMap
+
+  ```java
+
+  public class HashMap<K,V> extends AbstractMap<K,V>
+      implements Map<K,V>, Cloneable, Serializable
+  ```
+
+  继承AbstractMap，底层实现数组+链表+红黑树，线程不安全，可以用
+  Collections的synchronizedMap方法使HashMap具有线程安全的能力。
+
+  ## HashTable
+
+  ```java
+
+  public class Hashtable<K,V>
+      extends Dictionary<K,V>
+      implements Map<K,V>, Cloneable, java.io.Serializable
+  ```
+
+  继承Dictionary类，是遗留类，很多映射的常用功能与HashMap类似，线程安全，但是不建议在新代码使用，不需要线程安全的场合可以用HashMap替换，需要线程安全的场合可以用ConcurrentHashMap替换。
+
+  ## LinkedHashMap
+
+  ```java
+
+  public class LinkedHashMap<K,V>
+      extends HashMap<K,V>
+      implements Map<K,V>
+  ```
+
+  是HashMap的一个子类，保存了记录的插入顺序，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的，也可以在构造时带参数，按照访问次序排序。
+
+  ## TreeMap
+
+  ```java
+
+  public class TreeMap<K,V>
+      extends AbstractMap<K,V>
+      implements NavigableMap<K,V>, Cloneable, java.io.Serializable
+  ```
+
+  继承abstractMap,实现SortedMap接口，能够把它保存的记录根据键排序，默认是按键值的升序排序，也可以指定排序的比较器，当用Iterator遍历TreeMap时，得到的记录是排过序的。如果使用排序的映射，建议使用TreeMap。在使用TreeMap时，key必须实现Comparable接口或者在构造TreeMap传入自定义的Comparator，否则会在运行时抛出java.lang.ClassCastException类型的异常。
 categories:
   - java
 toc: false
@@ -167,3 +211,30 @@ public class LinkedHashSet<E>
     implements Set<E>, Cloneable, java.io.Serializable
 ```
 继承HashSet并实现Set,Cloneable,Serializable接口
+## HashMap
+```java
+public class HashMap<K,V> extends AbstractMap<K,V>
+    implements Map<K,V>, Cloneable, Serializable
+```
+继承AbstractMap，底层实现数组+链表+红黑树，线程不安全，可以用 Collections的synchronizedMap方法使HashMap具有线程安全的能力。
+## HashTable
+```java
+public class Hashtable<K,V>
+    extends Dictionary<K,V>
+    implements Map<K,V>, Cloneable, java.io.Serializable
+```
+继承Dictionary类，是遗留类，很多映射的常用功能与HashMap类似，线程安全，但是不建议在新代码使用，不需要线程安全的场合可以用HashMap替换，需要线程安全的场合可以用ConcurrentHashMap替换。
+## LinkedHashMap
+```java
+public class LinkedHashMap<K,V>
+    extends HashMap<K,V>
+    implements Map<K,V>
+```
+是HashMap的一个子类，保存了记录的插入顺序，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的，也可以在构造时带参数，按照访问次序排序。
+## TreeMap
+```java
+public class TreeMap<K,V>
+    extends AbstractMap<K,V>
+    implements NavigableMap<K,V>, Cloneable, java.io.Serializable
+```
+继承abstractMap,实现SortedMap接口，能够把它保存的记录根据键排序，默认是按键值的升序排序，也可以指定排序的比较器，当用Iterator遍历TreeMap时，得到的记录是排过序的。如果使用排序的映射，建议使用TreeMap。在使用TreeMap时，key必须实现Comparable接口或者在构造TreeMap传入自定义的Comparator，否则会在运行时抛出java.lang.ClassCastException类型的异常。
