@@ -2,7 +2,7 @@
 title: java集合框架：概述
 tags:
   - java
-originContent: >
+originContent: >-
   本文主要内容是概述java集合框架的所有内容，接下来的篇章会详细介绍各个集合的内容。
 
   <!-- more -->
@@ -59,6 +59,46 @@ originContent: >
       extends AbstractSequentialList<E>
       implements List<E>, Deque<E>, Cloneable, java.io.Serializable
   ```
+
+  继承AbstractSequentialList并实现了List, Deque, Cloneable, Serializable等接口
+
+
+  # Set
+
+  Set里面存放的都是无序的非重复数据。
+
+  ## HashSet
+
+  ```java
+
+  public class HashSet<E>
+      extends AbstractSet<E>
+      implements Set<E>, Cloneable, java.io.Serializable
+  ```
+
+  继承至AbstractSet并实现了Set,Cloneable,Serializable接口
+
+
+  ## TreeSet
+
+  ```java
+
+  public class TreeSet<E> extends AbstractSet<E>
+      implements NavigableSet<E>, Cloneable, java.io.Serializable
+  ```
+
+  继承AbstractSet并实现了NavigableSet，Cloneable和Serializable接口
+
+  ## LinkedHashSet
+
+  ```java
+
+  public class LinkedHashSet<E>
+      extends HashSet<E>
+      implements Set<E>, Cloneable, java.io.Serializable
+  ```
+
+  继承HashSet并实现Set,Cloneable,Serializable接口
 categories:
   - java
 toc: false
@@ -100,6 +140,8 @@ public class LinkedList<E>
 ```
 继承AbstractSequentialList并实现了List, Deque, Cloneable, Serializable等接口
 
+# Set
+Set里面存放的都是无序的非重复数据。
 ## HashSet
 ```java
 public class HashSet<E>
@@ -107,3 +149,17 @@ public class HashSet<E>
     implements Set<E>, Cloneable, java.io.Serializable
 ```
 继承至AbstractSet并实现了Set,Cloneable,Serializable接口
+
+## TreeSet
+```java
+public class TreeSet<E> extends AbstractSet<E>
+    implements NavigableSet<E>, Cloneable, java.io.Serializable
+```
+继承AbstractSet并实现了NavigableSet，Cloneable和Serializable接口
+## LinkedHashSet
+```java
+public class LinkedHashSet<E>
+    extends HashSet<E>
+    implements Set<E>, Cloneable, java.io.Serializable
+```
+继承HashSet并实现Set,Cloneable,Serializable接口
