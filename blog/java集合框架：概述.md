@@ -2,7 +2,7 @@
 title: java集合框架：概述
 tags:
   - java
-originContent: >-
+originContent: >
   本文主要内容是概述java集合框架的所有内容，接下来的篇章会详细介绍各个集合的内容。
 
   <!-- more -->
@@ -40,6 +40,8 @@ originContent: >-
 
   ArrayList继承至AbstractList，实现了List,RandomAccess,Cloneable,Serializable四个接口，使其具有List的通用操作，随机访问能力，可拷贝与可序列化。
 
+  底层实现是使用动态数组，数组有固定容量(length),当集合中的元素超过这个数量后就会发生扩容
+
   ## Vector
 
   ```java
@@ -49,7 +51,7 @@ originContent: >-
       implements List<E>, RandomAccess, Cloneable, java.io.Serializable
   ```
 
-  ArrayList继承至AbstractList，实现了List,RandomAccess,Cloneable,Serializable四个接口，使其具有List的通用操作，随机访问能力，可拷贝与可序列化。唯一与ArrayList不同的是采用synchronized加锁的方式实现线程安全。
+  Vector继承至AbstractList，实现了List,RandomAccess,Cloneable,Serializable四个接口，使其具有List的通用操作，随机访问能力，可拷贝与可序列化。唯一与ArrayList不同的是采用synchronized加锁的方式实现线程安全。
 
   ## LinkedList
 
@@ -62,6 +64,7 @@ originContent: >-
 
   继承AbstractSequentialList并实现了List, Deque, Cloneable, Serializable等接口
 
+  实现List接口，可以进行队列的操作，实现Deque接口，使其具有双端队列的能力
 
   # Set
 
@@ -125,13 +128,14 @@ public class ArrayList<E> extends AbstractList<E>
 ```
 
 ArrayList继承至AbstractList，实现了List,RandomAccess,Cloneable,Serializable四个接口，使其具有List的通用操作，随机访问能力，可拷贝与可序列化。
+底层实现是使用动态数组，数组有固定容量(length),当集合中的元素超过这个数量后就会发生扩容
 ## Vector
 ```java
 public class Vector<E>
     extends AbstractList<E>
     implements List<E>, RandomAccess, Cloneable, java.io.Serializable
 ```
-ArrayList继承至AbstractList，实现了List,RandomAccess,Cloneable,Serializable四个接口，使其具有List的通用操作，随机访问能力，可拷贝与可序列化。唯一与ArrayList不同的是采用synchronized加锁的方式实现线程安全。
+Vector继承至AbstractList，实现了List,RandomAccess,Cloneable,Serializable四个接口，使其具有List的通用操作，随机访问能力，可拷贝与可序列化。唯一与ArrayList不同的是采用synchronized加锁的方式实现线程安全。
 ## LinkedList
 ```java
 public class LinkedList<E>
@@ -139,7 +143,7 @@ public class LinkedList<E>
     implements List<E>, Deque<E>, Cloneable, java.io.Serializable
 ```
 继承AbstractSequentialList并实现了List, Deque, Cloneable, Serializable等接口
-
+实现List接口，可以进行队列的操作，实现Deque接口，使其具有双端队列的能力
 # Set
 Set里面存放的都是无序的非重复数据。
 ## HashSet
