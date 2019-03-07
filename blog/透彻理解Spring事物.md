@@ -2,7 +2,7 @@
 title: 透彻理解Spring事物
 tags:
   - Spring
-originContent: >
+originContent: >-
   本文将带你透彻理解，看完此篇，相信你能对Spring事物有一个透彻的理解与掌握。
 
   <!-- more -->
@@ -87,7 +87,40 @@ originContent: >
   - 丢失修改（Lost to
   modify）：一个事物读取到一个数据时，另外一个事物也读取了这个数据，第一个事物修改了这个数据，第二个事物也修改了这个数据，这样第一个事物修改的数据就会丢失，称为丢失修改。
 
-  - 不可重复读（Unrepeatableread）：
+  -
+  不可重复读（Unrepeatableread）：在一个事务内多次读同一个数据，在这个事物还没有结束时，另一个事物也访问该数据。那么，在第一个事物两次读数据中间，由于第二个事物修改了数据导致第一个事物两次读出的数据不一致，这样就发生了两次读到的数据是不一样的，因此称为不可重复读。
+
+  - 幻读（Phantom
+  read）：发生在一个事物读取了几行数据，接着另外一个事物插入了几行数据，在随后的查询中，第一个事物就会发现多了一些数据，就像发生了幻视一样，所以称为幻读。
+
+  不可重复读的重点是修改，幻读的重点在于新增或者删除。
+
+  ##### TransactionDefinition 接口中定义了五个表示隔离级别的常量：
+
+  -
+  TransactionDefinition.ISOLATION_DEFAULT：使用后端数据库默认的隔离级别，mysql默认采用REPEATABLE_READ隔离级别，Oracle默认采用READ_COMMITTED隔离级别。
+
+  -
+  TransactionDefinition.ISOLATION_READ_UNCOMMITTED：最低的隔离级别，允许读取尚未提交的数据变更，可能会导致脏读，幻读，不可重复读。
+
+  -
+  TransactionDefinition.ISOLATION_READ_COMMITTED：允许读取并发事物已经提交的数据，可以阻止脏读，但是幻读和不可重复读仍有可能发生。
+
+  -
+  TransactionDefinition.ISOLATION_REPEATABLE_READ：对同一字段的多次读取结果都是一致的，除非数据是被本身事物自己修改的，可以阻止脏读和不可重复读，但幻读仍有可能发生。
+
+  -
+  TransactionDefinition.ISOLATION_SERIALIZABLE：最高的隔离级别，完全服从ACID的隔离级别，所有的事物依次逐个执行，这种事物之间就完全不可能产生干扰，但是会严重影响程序性能。通常情况下也不会用到该级别。
+
+  #### 事物传播行为（为了解决业务层方法之间互相调用的事物问题）
+
+  当事物方法被另外一个事物方法调用时，必须指定事物应该如何传播，方法可能继续在现有事物中运行，也可能开启一个新事物，并在自己的事物中运行。在TransactionDefinition定义中包括了如下几个表示传播行为的常量：
+
+  - TransactionDefinition.PROPAGATION_REQUIRED：如果当前存在事物，则加入该事物，否则创建一个新事物
+
+  - TransactionDefinition.PROPAGATION_SUPPORTS：如果当前存在事物，则加入该事物，否则以非事物的方式继续运行
+
+  - TransactionDefinition.PROPAGATION_MANDATORY：如果当前存在事物，则加入该事物，否则强制性抛出异常
 categories: []
 toc: false
 date: 2019-03-07 15:51:56
@@ -138,4 +171,17 @@ Public interface PlatformTransactionManager()...{
 在谈事物隔离级别之前，先来谈谈并发事物带来的问题：
 - 脏读（Dirty read）：当一个事物正在访问数据并且对数据进行了修改，而这种修改还没有提交到数据库中，这时另外一个事物也访问了这个数据，然后使用了这个数据。因为这个数据是还没有提交的，另外一个事物读到的这个数据就是脏数据，依据脏数据所做的操作可能是不正确的。
 - 丢失修改（Lost to modify）：一个事物读取到一个数据时，另外一个事物也读取了这个数据，第一个事物修改了这个数据，第二个事物也修改了这个数据，这样第一个事物修改的数据就会丢失，称为丢失修改。
-- 不可重复读（Unrepeatableread）：
+- 不可重复读（Unrepeatableread）：在一个事务内多次读同一个数据，在这个事物还没有结束时，另一个事物也访问该数据。那么，在第一个事物两次读数据中间，由于第二个事物修改了数据导致第一个事物两次读出的数据不一致，这样就发生了两次读到的数据是不一样的，因此称为不可重复读。
+- 幻读（Phantom read）：发生在一个事物读取了几行数据，接着另外一个事物插入了几行数据，在随后的查询中，第一个事物就会发现多了一些数据，就像发生了幻视一样，所以称为幻读。
+不可重复读的重点是修改，幻读的重点在于新增或者删除。
+##### TransactionDefinition 接口中定义了五个表示隔离级别的常量：
+- TransactionDefinition.ISOLATION_DEFAULT：使用后端数据库默认的隔离级别，mysql默认采用REPEATABLE_READ隔离级别，Oracle默认采用READ_COMMITTED隔离级别。
+- TransactionDefinition.ISOLATION_READ_UNCOMMITTED：最低的隔离级别，允许读取尚未提交的数据变更，可能会导致脏读，幻读，不可重复读。
+- TransactionDefinition.ISOLATION_READ_COMMITTED：允许读取并发事物已经提交的数据，可以阻止脏读，但是幻读和不可重复读仍有可能发生。
+- TransactionDefinition.ISOLATION_REPEATABLE_READ：对同一字段的多次读取结果都是一致的，除非数据是被本身事物自己修改的，可以阻止脏读和不可重复读，但幻读仍有可能发生。
+- TransactionDefinition.ISOLATION_SERIALIZABLE：最高的隔离级别，完全服从ACID的隔离级别，所有的事物依次逐个执行，这种事物之间就完全不可能产生干扰，但是会严重影响程序性能。通常情况下也不会用到该级别。
+#### 事物传播行为（为了解决业务层方法之间互相调用的事物问题）
+当事物方法被另外一个事物方法调用时，必须指定事物应该如何传播，方法可能继续在现有事物中运行，也可能开启一个新事物，并在自己的事物中运行。在TransactionDefinition定义中包括了如下几个表示传播行为的常量：
+- TransactionDefinition.PROPAGATION_REQUIRED：如果当前存在事物，则加入该事物，否则创建一个新事物
+- TransactionDefinition.PROPAGATION_SUPPORTS：如果当前存在事物，则加入该事物，否则以非事物的方式继续运行
+- TransactionDefinition.PROPAGATION_MANDATORY：如果当前存在事物，则加入该事物，否则强制性抛出异常
