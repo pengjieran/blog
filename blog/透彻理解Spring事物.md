@@ -2,7 +2,7 @@
 title: 透彻理解Spring事物
 tags:
   - Spring
-originContent: >
+originContent: >-
   本文将带你透彻理解，看完此篇，相信你能对Spring事物有一个透彻的理解与掌握。
 
   <!-- more -->
@@ -174,6 +174,16 @@ originContent: >
   }
 
   ```
+
+  # 
+
+
+
+
+
+  参考：
+
+  https://juejin.im/post/5b00c52ef265da0b95276091
 categories: []
 toc: false
 date: 2019-03-07 15:51:56
@@ -265,3 +275,6 @@ public interface TransactionStatus{
     boolean isCompleted; // 是否已完成
 }
 ```
+
+参考：
+https://juejin.im/post/5b00c52ef265da0b95276091
