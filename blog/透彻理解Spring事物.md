@@ -2,7 +2,7 @@
 title: 透彻理解Spring事物
 tags:
   - Spring
-originContent: >-
+originContent: >
   本文将带你透彻理解，看完此篇，相信你能对Spring事物有一个透彻的理解与掌握。
 
   <!-- more -->
@@ -121,6 +121,59 @@ originContent: >-
   - TransactionDefinition.PROPAGATION_SUPPORTS：如果当前存在事物，则加入该事物，否则以非事物的方式继续运行
 
   - TransactionDefinition.PROPAGATION_MANDATORY：如果当前存在事物，则加入该事物，否则强制性抛出异常
+
+  不支持当前事物的情况：
+
+  - TransactionDefinition.PROPAGATION_REQUIRES_NEW：创建一个新事物，如果当前存在事物，则把当前事物挂起
+
+  - TransactionDefinition.PROPAGATION_NOT_SUPPORTED：以非事物方式运行，如果当前存在事物，则把当前事物挂起
+
+  - TransactionDefinition.PROPAGATION_NEVER：以非事物方式运行，如果当前存在事物，则抛出异常
+
+  其他情况：
+
+  -
+  TransactionDefinition.PROPAGATION_NESTED：如果当前存在事物，则创建一个新事物作为当前事物的嵌套事物来运行，如果当前没有事物，则该取值等价于TransactionDefinition.PROPAGATION_REQUIRED
+
+  前面6种事物的传播属性是从EJB中引进的，共享相同的概念。最后一种是Spring特有的，以PROPAGATION_NESTED启动的事物内嵌于外部事物中，此时，内嵌事物并不是一个独立的事物，它依赖于外部事物的存在，只有通过外部事物的提交，才能引起内部事物的提交，嵌套的子子事物不能单独提交。
+
+  #### 事物超时属性
+
+  所谓事务超时，就是指一个事务所允许执行的最长时间，如果超过该时间限制但事务还没有完成，则自动回滚事务。在 TransactionDefinition 中以
+  int 的值来表示超时时间，其单位是秒。
+
+  #### 事务只读属性（对事物资源是否执行只读操作）
+
+  事务的只读属性是指，对事务性资源进行只读操作或者是读写操作。所谓事务性资源就是指那些被事务管理的资源，比如数据源、 JMS
+  资源，以及自定义的事务性资源等等。如果确定只对事务性资源进行只读操作，那么我们可以将事务标志为只读的，以提高事务处理的性能。在
+  TransactionDefinition 中以 boolean 类型来表示该事务是否只读。
+
+  #### 回滚规则（定义事务回滚规则）
+
+  这些规则定义了哪些异常会导致事务回滚而哪些不会。默认情况下，事务只有遇到运行期异常时才会回滚，而在遇到检查型异常时不会回滚（这一行为与EJB的回滚行为是一致的）。
+
+  但是你可以声明事务在遇到特定的检查型异常时像遇到运行期异常那样回滚。同样，你还可以声明事务遇到特定的异常不回滚，即使这些异常是运行期异常。
+
+  ### TransactionStatus
+
+  TransactionStatus接口用来记录事务的状态 该接口定义了一组方法,用来获取或判断事务的相应状态信息.
+
+  PlatformTransactionManager.getTransaction(…) 方法返回一个 TransactionStatus
+  对象。返回的TransactionStatus 对象可能代表一个新的或已经存在的事务（如果在当前调用堆栈有一个符合条件的事务）。
+
+  TransactionStatus接口内容如下：
+
+  ```java
+
+  public interface TransactionStatus{
+      boolean isNewTransaction(); // 是否是新的事物
+      boolean hasSavepoint(); // 是否有恢复点
+      void setRollbackOnly();  // 设置为只回滚
+      boolean isRollbackOnly(); // 是否为只回滚
+      boolean isCompleted; // 是否已完成
+  }
+
+  ```
 categories: []
 toc: false
 date: 2019-03-07 15:51:56
@@ -185,3 +238,30 @@ Public interface PlatformTransactionManager()...{
 - TransactionDefinition.PROPAGATION_REQUIRED：如果当前存在事物，则加入该事物，否则创建一个新事物
 - TransactionDefinition.PROPAGATION_SUPPORTS：如果当前存在事物，则加入该事物，否则以非事物的方式继续运行
 - TransactionDefinition.PROPAGATION_MANDATORY：如果当前存在事物，则加入该事物，否则强制性抛出异常
+不支持当前事物的情况：
+- TransactionDefinition.PROPAGATION_REQUIRES_NEW：创建一个新事物，如果当前存在事物，则把当前事物挂起
+- TransactionDefinition.PROPAGATION_NOT_SUPPORTED：以非事物方式运行，如果当前存在事物，则把当前事物挂起
+- TransactionDefinition.PROPAGATION_NEVER：以非事物方式运行，如果当前存在事物，则抛出异常
+其他情况：
+- TransactionDefinition.PROPAGATION_NESTED：如果当前存在事物，则创建一个新事物作为当前事物的嵌套事物来运行，如果当前没有事物，则该取值等价于TransactionDefinition.PROPAGATION_REQUIRED
+前面6种事物的传播属性是从EJB中引进的，共享相同的概念。最后一种是Spring特有的，以PROPAGATION_NESTED启动的事物内嵌于外部事物中，此时，内嵌事物并不是一个独立的事物，它依赖于外部事物的存在，只有通过外部事物的提交，才能引起内部事物的提交，嵌套的子子事物不能单独提交。
+#### 事物超时属性
+所谓事务超时，就是指一个事务所允许执行的最长时间，如果超过该时间限制但事务还没有完成，则自动回滚事务。在 TransactionDefinition 中以 int 的值来表示超时时间，其单位是秒。
+#### 事务只读属性（对事物资源是否执行只读操作）
+事务的只读属性是指，对事务性资源进行只读操作或者是读写操作。所谓事务性资源就是指那些被事务管理的资源，比如数据源、 JMS 资源，以及自定义的事务性资源等等。如果确定只对事务性资源进行只读操作，那么我们可以将事务标志为只读的，以提高事务处理的性能。在 TransactionDefinition 中以 boolean 类型来表示该事务是否只读。
+#### 回滚规则（定义事务回滚规则）
+这些规则定义了哪些异常会导致事务回滚而哪些不会。默认情况下，事务只有遇到运行期异常时才会回滚，而在遇到检查型异常时不会回滚（这一行为与EJB的回滚行为是一致的）。
+但是你可以声明事务在遇到特定的检查型异常时像遇到运行期异常那样回滚。同样，你还可以声明事务遇到特定的异常不回滚，即使这些异常是运行期异常。
+### TransactionStatus
+TransactionStatus接口用来记录事务的状态 该接口定义了一组方法,用来获取或判断事务的相应状态信息.
+PlatformTransactionManager.getTransaction(…) 方法返回一个 TransactionStatus 对象。返回的TransactionStatus 对象可能代表一个新的或已经存在的事务（如果在当前调用堆栈有一个符合条件的事务）。
+TransactionStatus接口内容如下：
+```java
+public interface TransactionStatus{
+    boolean isNewTransaction(); // 是否是新的事物
+    boolean hasSavepoint(); // 是否有恢复点
+    void setRollbackOnly();  // 设置为只回滚
+    boolean isRollbackOnly(); // 是否为只回滚
+    boolean isCompleted; // 是否已完成
+}
+```
